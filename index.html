@@ -15,6 +15,7 @@
   --bg:#F3F6F2; --surface:#FFFFFF; --ink:#15211E; --muted:#56655F; --line:#D9E1DB;
   --accent:#0F6B5C; --accent-soft:#E1F0EB; --mark:#F6DFA4; --mark-ink:#5C4100;
   --bad:#A33A2C; --bad-soft:#F8E4E0; --good:#1D6B3A; --good-soft:#E0F1E5;
+  --c2:#B5641E; --grid:#E6ECE8;
   --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
   --f-body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
   --f-ar:"IBM Plex Sans Arabic", "Noto Sans Arabic", "Segoe UI", Tahoma, sans-serif;
@@ -23,13 +24,14 @@
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#0F1614; --surface:#17211E; --ink:#E4ECE8; --muted:#9BABA5; --line:#2A3833;
   --accent:#5CC4AA; --accent-soft:#1B3530; --mark:#5A4614; --mark-ink:#F6DFA4;
-  --bad:#F08F80; --bad-soft:#3B201C; --good:#7FD39C; --good-soft:#1A3324; color-scheme:dark}}
+  --bad:#F08F80; --bad-soft:#3B201C; --good:#7FD39C; --good-soft:#1A3324; --c2:#E39A55; --grid:#24302C; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0F1614; --surface:#17211E; --ink:#E4ECE8; --muted:#9BABA5; --line:#2A3833;
   --accent:#5CC4AA; --accent-soft:#1B3530; --mark:#5A4614; --mark-ink:#F6DFA4;
-  --bad:#F08F80; --bad-soft:#3B201C; --good:#7FD39C; --good-soft:#1A3324; color-scheme:dark}
+  --bad:#F08F80; --bad-soft:#3B201C; --good:#7FD39C; --good-soft:#1A3324; --c2:#E39A55; --grid:#24302C; color-scheme:dark}
 
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;margin:0}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 a{color:var(--accent)}
@@ -156,6 +158,35 @@ ol.rules li::marker{font-family:var(--f-mono);color:var(--accent)}
 .contact-row .val{flex:1;min-width:0;overflow-wrap:anywhere;user-select:all}
 .copy{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:6px;padding:6px 12px;font-size:.82rem;cursor:pointer;font-family:var(--f-body)}
 footer{padding-block:30px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--line)}
+/* case studies */
+ol.steps{list-style:none;margin:0;padding:0;display:grid;gap:0;counter-reset:st}
+ol.steps > li{display:grid;grid-template-columns:110px 1fr;gap:20px;padding-block:20px;border-top:1px solid var(--line);counter-increment:st}
+ol.steps > li:first-child{border-top:0;padding-top:4px}
+ol.steps > li > *{min-width:0}
+.step-name{font-family:var(--f-display);font-weight:700;font-size:1.05rem;color:var(--accent)}
+.step-name::before{content:counter(st);display:block;font-family:var(--f-mono);font-size:.7rem;font-weight:400;color:var(--muted);letter-spacing:.06em}
+.step-body{display:grid;gap:12px;font-size:.95rem}
+ul.tight,ul.findings{margin:0;padding-left:18px;display:grid;gap:6px}
+.small{font-size:.8rem;color:var(--muted);font-weight:400}
+.code{margin:0;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px 14px;overflow-x:auto;font-family:var(--f-mono);font-size:.78rem;line-height:1.6}
+table.data{min-width:520px}
+table.data .num{text-align:right;font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:.84rem}
+table.data tr.idx td{background:var(--accent-soft);font-weight:600}
+.chart-fig{margin:0;border:1px solid var(--line);border-radius:10px;padding:14px 14px 8px;display:grid;gap:8px}
+.chart-fig figcaption{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;font-size:.9rem}
+.legend{display:flex;gap:14px;margin-left:auto;font-size:.8rem;color:var(--muted)}
+.key{display:inline-flex;align-items:center;gap:6px}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.dot.k1{background:var(--accent)} .dot.k2{background:var(--c2)}
+.svg-wrap{overflow-x:auto}
+.svg-wrap svg{display:block;width:100%;min-width:520px;height:auto}
+.svg-wrap text{font-family:var(--f-mono);font-size:11px;fill:var(--muted)}
+.svg-wrap text.lbl{fill:var(--ink);font-family:var(--f-body);font-size:12px}
+.svg-wrap .gl{stroke:var(--grid);stroke-width:1}
+.svg-wrap .ax{stroke:var(--line);stroke-width:1}
+.svg-wrap .hit:hover + .pt, .svg-wrap .pt:hover{stroke-width:3}
+#p-air .kpis,#p-fleet .kpis{margin:0}
+@media (max-width:640px){ol.steps > li{grid-template-columns:1fr;gap:6px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -167,7 +198,7 @@ footer{padding-block:30px;color:var(--muted);font-size:.85rem;border-top:1px sol
     <nav class="links" aria-label="Sections">
       <a href="#about">About</a>
       <a href="#samples">AI work samples</a>
-      <a href="#analytics">Analytics</a>
+      <a href="#analytics">Data projects</a>
       <a href="#experience">Experience</a>
       <a href="#skills">Skills</a>
       <a href="#contact">Contact</a>
@@ -411,20 +442,199 @@ footer{padding-block:30px;color:var(--muted);font-size:.85rem;border-top:1px sol
   <section id="analytics">
     <div class="wrap">
       <div class="sec-head">
-        <p class="eyebrow">Data analytics sample</p>
-        <h2>Fleet parts procurement dashboard</h2>
-        <p class="lead">A summary of the kind I built for heavy-truck procurement: where the money goes, and what better reorder points changed.</p>
+        <p class="eyebrow">Data analysis projects</p>
+        <h2>Data analysis case studies</h2>
+        <p class="lead">Two end-to-end analyses of real public datasets, each taking a business question through data cleaning and analysis to clear recommendations. Plus a procurement dashboard based on my fleet work.</p>
       </div>
-      <p class="note">Illustrative dataset modeled on my procurement work. It is not company data.</p>
-      <div class="kpis">
-        <div class="kpi"><div class="eyebrow">Stockouts per quarter</div><div class="v">14 → 3</div><div class="d">After setting min/max reorder points</div></div>
-        <div class="kpi"><div class="eyebrow">Avg. urgent-part lead time</div><div class="v">9.2 → 6.1 d</div><div class="d">After consolidating shipping</div></div>
-        <div class="kpi"><div class="eyebrow">Annual parts savings</div><div class="v">11.4%</div><div class="d">From vendor renegotiation</div></div>
+
+      <div class="tabs" role="tablist" aria-label="Data analysis projects">
+        <button class="tab" role="tab" id="t-fin" aria-controls="p-fin" aria-selected="true">Financial: stocks vs. the market</button>
+        <button class="tab" role="tab" id="t-air" aria-controls="p-air" aria-selected="false">Commercial: airline demand</button>
+        <button class="tab" role="tab" id="t-fleet" aria-controls="p-fleet" aria-selected="false">Fleet procurement dashboard</button>
       </div>
-      <div class="chart">
-        <h3>Annual parts spend by category</h3>
-        <p style="color:var(--muted);font-size:.85rem">USD thousands · total 1,258</p>
-        <div class="bars" id="bars" role="img" aria-label="Annual parts spend by category: Tires 412, Engine and drivetrain 356, Brakes 188, Filters and fluids 141, Electrical 97, Body and cab 64 thousand US dollars"></div>
+
+      <!-- Financial -->
+      <div class="panel" role="tabpanel" id="p-fin" aria-labelledby="t-fin">
+        <div class="panel-head">
+          <h3>Did picking big tech stocks beat a simple index fund?</h3>
+          <p>Monthly prices for seven well-known companies against the S&amp;P 500 and NASDAQ, September 2004 to June 2022.</p>
+        </div>
+        <ol class="steps">
+          <li>
+            <span class="step-name">Ask</span>
+            <div class="step-body">
+              <p><strong>Business task:</strong> A long-term investor wants to know whether buying individual large tech stocks rewarded the extra risk compared with holding an S&amp;P 500 index fund.</p>
+              <p><strong>Stakeholder:</strong> an individual investor or a financial advisor building a long-term portfolio.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-name">Prepare</span>
+            <div class="step-body">
+              <p><strong>Data:</strong> monthly closing prices from Yahoo Finance for IBM, Apple, Microsoft, Xerox, Amazon, Alphabet (Google), Adobe, Dell, the S&amp;P 500 and the NASDAQ Composite, January 1990 to June 2022. The file is the public sample shipped with the Matplotlib library.</p>
+              <p><strong>Credibility check:</strong> I matched the last prices against published closes (Apple $137.44 and Microsoft $256.48 on June 28, 2022).</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-name">Process</span>
+            <div class="step-body">
+              <ul class="tight">
+                <li>Removed 133 completely empty rows and 1 duplicate end-of-period row: 524 raw rows became 390 clean months.</li>
+                <li>Companies listed at different times (Amazon 1997, Google 2004, Dell 2016). To compare fairly, I used the common window where all tickers have data: Sep 2004 to Jun 2022, 214 months. Dell was dropped because its data only starts in 2016.</li>
+                <li>Verified zero missing values in the final window.</li>
+              </ul>
+              <pre class="code"><code>df = pd.read_csv("stocks.csv", comment="#", parse_dates=["Date"])
+df = df.dropna(how="all", subset=df.columns[1:])        # empty rows
+df = df[~df.duplicated(subset=df.columns[1:])]          # duplicate row
+window = df.set_index("Date").loc["2004-09":, tickers]  # common period
+assert window.isna().sum().sum() == 0</code></pre>
+            </div>
+          </li>
+          <li>
+            <span class="step-name">Analyze</span>
+            <div class="step-body">
+              <p>For each asset I calculated annual growth rate (CAGR), volatility (annualized standard deviation of monthly returns), and the worst peak-to-bottom drop.</p>
+              <div class="table-wrap">
+                <table class="data">
+                  <thead><tr><th>Asset</th><th class="num">Growth / year</th><th class="num">Volatility</th><th class="num">Worst drop</th><th class="num">$10,000 became</th></tr></thead>
+                  <tbody>
+                    <tr><td>Apple</td><td class="num">35.9%</td><td class="num">33.1%</td><td class="num">−56.9%</td><td class="num">$2,323,028</td></tr>
+                    <tr><td>Amazon</td><td class="num">25.0%</td><td class="num">36.3%</td><td class="num">−54.2%</td><td class="num">$525,698</td></tr>
+                    <tr><td>Alphabet</td><td class="num">22.1%</td><td class="num">30.1%</td><td class="num">−58.6%</td><td class="num">$345,356</td></tr>
+                    <tr><td>Adobe</td><td class="num">16.4%</td><td class="num">29.5%</td><td class="num">−65.1%</td><td class="num">$147,918</td></tr>
+                    <tr><td>Microsoft</td><td class="num">16.3%</td><td class="num">22.8%</td><td class="num">−55.2%</td><td class="num">$145,852</td></tr>
+                    <tr><td>IBM</td><td class="num">6.1%</td><td class="num">20.9%</td><td class="num">−37.2%</td><td class="num">$28,370</td></tr>
+                    <tr><td>Xerox</td><td class="num">−2.5%</td><td class="num">35.2%</td><td class="num">−75.5%</td><td class="num">$6,388</td></tr>
+                    <tr class="idx"><td>NASDAQ Composite</td><td class="num">10.5%</td><td class="num">17.5%</td><td class="num">−51.8%</td><td class="num">$58,948</td></tr>
+                    <tr class="idx"><td>S&amp;P 500</td><td class="num">7.2%</td><td class="num">14.7%</td><td class="num">−52.6%</td><td class="num">$34,287</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="small">Price growth only. Dividends are not included, which understates the S&amp;P 500 and IBM.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-name">Share</span>
+            <div class="step-body">
+              <figure class="chart-fig">
+                <figcaption><strong>Return vs. risk, Sep 2004 – Jun 2022</strong><span class="legend"><span class="key"><i class="dot k1"></i>Index</span><span class="key"><i class="dot k2"></i>Single stock</span></span></figcaption>
+                <div class="svg-wrap" id="chart-risk" role="img" aria-label="Scatter chart of annual growth against volatility. Indexes sit at low risk with 7 to 10 percent growth. Single stocks spread widely, from Xerox at minus 2.5 percent to Apple at 35.9 percent, all with higher volatility."></div>
+              </figure>
+              <ul class="findings">
+                <li><strong>Every single stock was riskier than the index.</strong> Volatility ranged from 21% to 36%, against 15% for the S&amp;P 500.</li>
+                <li><strong>Higher risk did not guarantee higher return.</strong> Xerox was as volatile as Apple and lost money. IBM grew slower than the index.</li>
+                <li><strong>The winners only look obvious in hindsight.</strong> These companies were chosen because they are famous today. Investors in 2004 could not know which ones would become Apple and which would become Xerox.</li>
+                <li><strong>Patience mattered.</strong> The S&amp;P 500 peaked in October 2007, bottomed in February 2009, and only regained its peak in March 2013.</li>
+              </ul>
+            </div>
+          </li>
+          <li>
+            <span class="step-name">Act</span>
+            <div class="step-body">
+              <ul class="tight">
+                <li>Make a broad index fund the core of a long-term portfolio. It gave solid growth with the lowest risk.</li>
+                <li>Keep any single company to a small share of the portfolio, and only with money that can stay invested through a 50%+ drop.</li>
+                <li>Plan for a recovery period of five years or more after a major crash.</li>
+                <li><strong>Next step:</strong> repeat with dividends included and with a wider list of companies, including ones that were delisted, to remove survivorship bias.</li>
+              </ul>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <!-- Airline -->
+      <div class="panel" role="tabpanel" id="p-air" aria-labelledby="t-air" hidden>
+        <div class="panel-head">
+          <h3>When should an airline add capacity and staff?</h3>
+          <p>Twelve years of monthly passenger demand for international airlines, 1949 to 1960.</p>
+        </div>
+        <ol class="steps">
+          <li>
+            <span class="step-name">Ask</span>
+            <div class="step-body">
+              <p><strong>Business task:</strong> Find the demand pattern so operations can schedule extra flights, staff and maintenance at the right time of year, and estimate demand for the next year.</p>
+              <p><strong>Stakeholders:</strong> network planning, crew scheduling and maintenance managers.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-name">Prepare</span>
+            <div class="step-body">
+              <p><strong>Data:</strong> the “AirPassengers” dataset: monthly totals of international airline passengers in thousands, January 1949 to December 1960, 144 months. Originally published by Box &amp; Jenkins and distributed with the R statistics language.</p>
+              <p><strong>Credibility check:</strong> my total of 40,363 thousand matches the published total for the dataset.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-name">Process</span>
+            <div class="step-body">
+              <ul class="tight">
+                <li>Reshaped the year-by-month table (12 × 12) into one row per month for time-series analysis.</li>
+                <li>Checked for gaps and invalid values: 144 of 144 months present, all positive whole numbers.</li>
+              </ul>
+              <pre class="code"><code>SELECT year,
+       SUM(passengers)                       AS annual_total,
+       ROUND(100.0 * MAX(passengers) / MIN(passengers) - 100) AS peak_vs_low_pct
+FROM   air_passengers
+GROUP  BY year
+ORDER  BY year;</code></pre>
+            </div>
+          </li>
+          <li>
+            <span class="step-name">Analyze</span>
+            <div class="step-body">
+              <div class="kpis">
+                <div class="kpi"><div class="eyebrow">Annual growth</div><div class="v">12.8%</div><div class="d">1.52M passengers (1949) to 5.71M (1960)</div></div>
+                <div class="kpi"><div class="eyebrow">Summer share</div><div class="v">30.1%</div><div class="d">of all trips fall in June–August</div></div>
+                <div class="kpi"><div class="eyebrow">Peak vs. low month</div><div class="v">+59%</div><div class="d">July 1960 vs. November 1960</div></div>
+              </div>
+              <ul class="tight">
+                <li>July or August was the busiest month in all 12 years. November, January or February was always the quietest.</li>
+                <li>The gap between the busiest and quietest month grew from 44,000 to 232,000 passengers, but in percentage terms it stayed between 37% and 63%. Seasonality grows with the business, so it should be planned in percentages, not fixed numbers.</li>
+                <li>Growth slowed in 1954 (6.2%) and 1958 (3.4%), years of US economic recession, so the forecast needs a margin for downturns.</li>
+              </ul>
+            </div>
+          </li>
+          <li>
+            <span class="step-name">Share</span>
+            <div class="step-body">
+              <figure class="chart-fig">
+                <figcaption><strong>Monthly passengers, 1949–1960</strong> <span class="small">thousands</span></figcaption>
+                <div class="svg-wrap" id="chart-air" role="img" aria-label="Line chart of monthly passengers rising from about 112 thousand in 1949 to 622 thousand in July 1960, with a summer peak every year that grows larger over time."></div>
+              </figure>
+              <figure class="chart-fig">
+                <figcaption><strong>Seasonal index by month</strong> <span class="small">100 = an average month</span><span class="legend"><span class="key"><i class="dot k1"></i>Busier than average</span><span class="key"><i class="dot k2"></i>Quieter</span></span></figcaption>
+                <div class="svg-wrap" id="chart-season" role="img" aria-label="Bar chart of seasonal index: July and August about 124, June 110, September 108, and November about 83, the lowest."></div>
+              </figure>
+            </div>
+          </li>
+          <li>
+            <span class="step-name">Act</span>
+            <div class="step-body">
+              <ul class="tight">
+                <li><strong>Add capacity June to September</strong>, with the most extra flights and crew in July and August (about 24% above an average month).</li>
+                <li><strong>Schedule heavy maintenance, training and staff vacation in November and February</strong>, when demand is 15–17% below average.</li>
+                <li><strong>Plan 1961 at about 6.2 million passengers</strong> (9% growth, the 3-year average), with July and August near 640,000 each. Keep a lower case ready in case of a recession.</li>
+                <li><strong>Next step:</strong> compare this simple estimate with a seasonal forecasting model and track actuals monthly.</li>
+              </ul>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <!-- Fleet -->
+      <div class="panel" role="tabpanel" id="p-fleet" aria-labelledby="t-fleet" hidden>
+        <div class="panel-head">
+          <h3>Fleet parts procurement dashboard</h3>
+          <p>A summary of the kind I built for heavy-truck procurement: where the money goes, and what better reorder points changed. Illustrative dataset modeled on my procurement work, not company data.</p>
+        </div>
+        <div class="kpis">
+          <div class="kpi"><div class="eyebrow">Stockouts per quarter</div><div class="v">14 → 3</div><div class="d">After setting min/max reorder points</div></div>
+          <div class="kpi"><div class="eyebrow">Avg. urgent-part lead time</div><div class="v">9.2 → 6.1 d</div><div class="d">After consolidating shipping</div></div>
+          <div class="kpi"><div class="eyebrow">Annual parts savings</div><div class="v">11.4%</div><div class="d">From vendor renegotiation</div></div>
+        </div>
+        <div class="chart">
+          <h3>Annual parts spend by category</h3>
+          <p style="color:var(--muted);font-size:.85rem">USD thousands · total 1,258</p>
+          <div class="bars" id="bars" role="img" aria-label="Annual parts spend by category: Tires 412, Engine and drivetrain 356, Brakes 188, Filters and fluids 141, Electrical 97, Body and cab 64 thousand US dollars"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -573,8 +783,9 @@ footer{padding-block:30px;color:var(--muted);font-size:.85rem;border-top:1px sol
 
 <script>
 (function(){
-  // Tabs
-  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  // Tabs (one group per tablist)
+  Array.prototype.forEach.call(document.querySelectorAll('[role="tablist"]'), function(list){
+  var tabs = Array.prototype.slice.call(list.querySelectorAll('.tab'));
   function select(tab){
     tabs.forEach(function(t){
       var on = t === tab;
@@ -593,6 +804,80 @@ footer{padding-block:30px;color:var(--muted);font-size:.85rem;border-top:1px sol
     });
   });
   select(tabs[0]);
+  });
+
+  // Charts (inline SVG)
+  var NS = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs, parent, text){
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (text != null) e.textContent = text;
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function svg(host, w, h){ return el('svg', {viewBox:'0 0 '+w+' '+h, preserveAspectRatio:'xMidYMid meet'}, document.getElementById(host)); }
+
+  // 1. Risk vs return scatter
+  (function(){
+    var W=640,H=380,L=56,R=24,T=20,B=48, s=svg('chart-risk',W,H);
+    var x0=10,x1=40,y0=-10,y1=40;
+    function X(v){return L+(v-x0)/(x1-x0)*(W-L-R);} function Y(v){return T+(y1-v)/(y1-y0)*(H-T-B);}
+    [-10,0,10,20,30,40].forEach(function(v){ el('line',{x1:L,x2:W-R,y1:Y(v),y2:Y(v),'class':v===0?'ax':'gl'},s); el('text',{x:L-8,y:Y(v)+4,'text-anchor':'end'},s,v+'%'); });
+    [10,15,20,25,30,35,40].forEach(function(v){ el('text',{x:X(v),y:H-B+18,'text-anchor':'middle'},s,v+'%'); });
+    el('text',{x:(L+W-R)/2,y:H-8,'text-anchor':'middle'},s,'Volatility (risk) →');
+    el('text',{x:14,y:(T+H-B)/2,'text-anchor':'middle',transform:'rotate(-90 14 '+((T+H-B)/2)+')'},s,'Growth per year →');
+    var pts=[['S&P 500',14.7,7.2,1,'r'],['NASDAQ',17.5,10.5,1,'r'],['Apple',33.1,35.9,0,'l'],['Amazon',36.3,25.0,0,'l'],['Alphabet',30.1,22.1,0,'l'],['Adobe',29.5,16.4,0,'r'],['Microsoft',22.8,16.3,0,'l'],['IBM',20.9,6.1,0,'r'],['Xerox',35.2,-2.5,0,'l']];
+    pts.forEach(function(p){
+      var cx=X(p[1]),cy=Y(p[2]), c=p[3]?'var(--accent)':'var(--c2)';
+      var g=el('g',{},s); el('title',{},g,p[0]+': '+p[2]+'% per year, '+p[1]+'% volatility');
+      el('circle',{cx:cx,cy:cy,r:14,fill:'transparent','class':'hit'},g);
+      el('circle',{cx:cx,cy:cy,r:6,fill:c,stroke:'var(--surface)','stroke-width':2,'class':'pt'},g);
+      el('text',{x:p[4]==='r'?cx+10:cx-10,y:cy+4,'text-anchor':p[4]==='r'?'start':'end','class':'lbl'},g,p[0]);
+    });
+  })();
+
+  // 2. Airline monthly line
+  var air=[[112,118,132,129,121,135,148,148,136,119,104,118],[115,126,141,135,125,149,170,170,158,133,114,140],[145,150,178,163,172,178,199,199,184,162,146,166],[171,180,193,181,183,218,230,242,209,191,172,194],[196,196,236,235,229,243,264,272,237,211,180,201],[204,188,235,227,234,264,302,293,259,229,203,229],[242,233,267,269,270,315,364,347,312,274,237,278],[284,277,317,313,318,374,413,405,355,306,271,306],[315,301,356,348,355,422,465,467,404,347,305,336],[340,318,362,348,363,435,491,505,404,359,310,337],[360,342,406,396,420,472,548,559,463,407,362,405],[417,391,419,461,472,535,622,606,508,461,390,432]];
+  var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  (function(){
+    var W=640,H=300,L=48,R=20,T=16,B=34,s=svg('chart-air',W,H), n=144;
+    function X(i){return L+i/(n-1)*(W-L-R);} function Y(v){return T+(700-v)/700*(H-T-B);}
+    [0,100,200,300,400,500,600,700].forEach(function(v){ el('line',{x1:L,x2:W-R,y1:Y(v),y2:Y(v),'class':v===0?'ax':'gl'},s); el('text',{x:L-8,y:Y(v)+4,'text-anchor':'end'},s,v); });
+    for (var y=0;y<12;y+=1){ el('text',{x:X(y*12),y:H-B+18,'text-anchor':'start'},s,y%2===0?String(1949+y):''); }
+    var flat=[].concat.apply([],air), d='', a='';
+    flat.forEach(function(v,i){ d+=(i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1); });
+    a=d+'L'+X(n-1)+' '+Y(0)+'L'+X(0)+' '+Y(0)+'Z';
+    el('path',{d:a,fill:'var(--accent)','fill-opacity':.1},s);
+    el('path',{d:d,fill:'none',stroke:'var(--accent)','stroke-width':2,'stroke-linejoin':'round'},s);
+    var pk=X(138), pv=Y(622); el('circle',{cx:pk,cy:pv,r:5,fill:'var(--accent)',stroke:'var(--surface)','stroke-width':2},s);
+    el('text',{x:pk-8,y:pv+4,'text-anchor':'end','class':'lbl'},s,'Jul 1960: 622');
+    el('circle',{cx:X(0),cy:Y(112),r:4,fill:'var(--accent)'},s);
+    el('line',{x1:X(0),x2:X(0),y1:Y(112),y2:Y(210),stroke:'var(--muted)'},s); el('text',{x:X(0)+6,y:Y(210)+4,'class':'lbl'},s,'Jan 1949: 112');
+    // hover
+    var hl=el('line',{y1:T,y2:H-B,stroke:'var(--muted)','stroke-dasharray':'3 3',visibility:'hidden'},s);
+    var tip=el('text',{y:T+12,'class':'lbl',visibility:'hidden'},s);
+    var ov=el('rect',{x:L,y:T,width:W-L-R,height:H-T-B,fill:'transparent'},s);
+    function move(ev){ var r=s.getBoundingClientRect(), px=(ev.clientX-r.left)/r.width*W, i=Math.max(0,Math.min(n-1,Math.round((px-L)/(W-L-R)*(n-1))));
+      hl.setAttribute('x1',X(i)); hl.setAttribute('x2',X(i)); hl.setAttribute('visibility','visible');
+      tip.textContent=MON[i%12]+' '+(1949+Math.floor(i/12))+': '+flat[i]+'k'; tip.setAttribute('x',X(i)>W/2?X(i)-8:X(i)+8); tip.setAttribute('text-anchor',X(i)>W/2?'end':'start'); tip.setAttribute('visibility','visible'); }
+    ov.addEventListener('mousemove',move); ov.addEventListener('mouseleave',function(){hl.setAttribute('visibility','hidden');tip.setAttribute('visibility','hidden');});
+  })();
+
+  // 3. Seasonal index bars (diverging around 100)
+  (function(){
+    var idx=[86.1,85.2,98.0,95.9,96.6,110.3,123.6,123.7,108.1,95.1,83.2,94.2];
+    var W=640,H=260,L=40,R=12,T=16,B=30,s=svg('chart-season',W,H);
+    function Y(v){return T+(130-v)/(130-75)*(H-T-B);}
+    [80,90,100,110,120,130].forEach(function(v){ el('line',{x1:L,x2:W-R,y1:Y(v),y2:Y(v),'class':v===100?'ax':'gl'},s); el('text',{x:L-6,y:Y(v)+4,'text-anchor':'end'},s,v); });
+    var bw=(W-L-R)/12;
+    idx.forEach(function(v,i){
+      var x=L+i*bw+5, w=bw-10, up=v>=100, y=up?Y(v):Y(100), h=Math.abs(Y(v)-Y(100));
+      var g=el('g',{},s); el('title',{},g,MON[i]+': '+v.toFixed(1)+' ('+(v>=100?'+':'')+(v-100).toFixed(1)+'% vs. average month)');
+      el('rect',{x:x,y:y,width:w,height:Math.max(h,1),rx:3,fill:up?'var(--accent)':'var(--c2)'},g);
+      el('text',{x:x+w/2,y:H-B+18,'text-anchor':'middle'},g,MON[i]);
+      if (i===6||i===7||i===10) el('text',{x:x+w/2,y:up?y-6:y+h+14,'text-anchor':'middle','class':'lbl'},g,Math.round(v));
+    });
+  })();
 
   // Bar chart
   var data = [["Tires",412],["Engine & drivetrain",356],["Brakes",188],["Filters & fluids",141],["Electrical",97],["Body & cab",64]];
